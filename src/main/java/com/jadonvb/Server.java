@@ -40,20 +40,8 @@ public class Server extends Thread {
     public void run() {
         while (true) {
             try {
-
                 Socket clientSocket = serverSocket.accept();
-                /*BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String clientName = in.readLine();
-                Client client = getClient(clientName);
-                if (client == null) {
-                    clients.add(new Client(clientSocket,clientName,this));
-                } else {
-                    client.setSocket(clientSocket);
-                }
-
-                 */
                 new Client(clientSocket,this);
-
             } catch (IOException e) {
                 logger.error("Can't connect new client!");
                 throw new RuntimeException(e);
