@@ -13,6 +13,8 @@ public class Server extends Thread {
     private final Logger logger;
     private final int PORT = 6989;
     private ServerSocket serverSocket;
+    private MessageHandler messageHandler;
+    private MessageQueue messageQueue;
     private ArrayList<Client> clients;
 
     public Server() {
@@ -20,6 +22,9 @@ public class Server extends Thread {
         logger = new Logger();
 
         clients = new ArrayList<>();
+
+        messageHandler = new MessageHandler();
+        messageQueue = new MessageQueue();
 
         try {
             serverSocket = new ServerSocket(PORT);
@@ -72,5 +77,9 @@ public class Server extends Thread {
 
     public void addClient(Client client) {
         clients.add(client);
+    }
+
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
     }
 }

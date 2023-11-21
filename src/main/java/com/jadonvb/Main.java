@@ -3,11 +3,9 @@ package com.jadonvb;
 
 import com.jadonvb.util.Logger;
 
-import java.io.IOException;
-
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         Logger logger = new Logger();
 
         Server server = new Server();

@@ -44,7 +44,7 @@ public class Client extends Thread {
     public void run() {
         while (true) {
             try {
-                logger.log(in.readLine());
+                server.getMessageHandler().getMessage(in.readLine());
             } catch (IOException ignored) {
                 logger.log("Client " + clientName + " disconnected!");
                 server.removeClient(this);
