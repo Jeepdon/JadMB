@@ -1,7 +1,5 @@
 package com.jadonvb;
 
-import com.jadonvb.util.Logger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,11 +13,13 @@ public class Client extends Thread {
     private BufferedReader in;
     private Socket clientSocket;
     private String clientName;
-    private Logger logger;
     private final Server server;
     private ArrayList<String> subscribedQueues;
+    private Logger logger;
 
     public Client(Socket clientSocket, Server server) throws IOException {
+
+        logger = new Logger("JadMB");
 
         this.clientSocket = clientSocket;
         this.server = server;
@@ -27,8 +27,6 @@ public class Client extends Thread {
 
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-        logger = new Logger();
 
         String name = in.readLine();
 

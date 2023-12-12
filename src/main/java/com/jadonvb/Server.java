@@ -1,7 +1,5 @@
 package com.jadonvb;
 
-import com.jadonvb.util.Logger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +17,7 @@ public class Server extends Thread {
 
     public Server() {
 
-        logger = new Logger();
+        logger = new Logger("JadMB");
 
         clients = new ArrayList<>();
 

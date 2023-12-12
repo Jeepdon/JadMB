@@ -13,11 +13,11 @@ public class MessageHandler {
         Gson gson = new Gson();
         Message message = gson.fromJson(msg, Message.class);
 
-        Logger logger = new Logger();
+        Logger logger = new Logger("JadMB");
 
-        logger.debug(String.valueOf(message.type));
-        logger.debug(message.getSender());
-        logger.debug(message.getArguments().get(0));
+        logger.log(String.valueOf(message.type));
+        logger.log(message.getSender());
+        logger.log(message.getArguments().get(0));
 
     }
 }
