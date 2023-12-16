@@ -5,6 +5,7 @@ public enum MessageTypes {
     JOIN,
     LEAVE,
     KICK,
-    INFO
+    INFO,
+    PORT_REQUEST
 
 }

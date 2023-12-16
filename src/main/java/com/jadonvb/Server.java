@@ -42,7 +42,6 @@ public class Server extends Thread {
                 new Client(clientSocket,this);
             } catch (IOException e) {
                 logger.error("Can't connect new client!");
-                throw new RuntimeException(e);
             }
             logger.log("Amount of clients: " + clients.size());
         }

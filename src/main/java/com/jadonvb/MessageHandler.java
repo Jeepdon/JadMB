@@ -1,7 +1,6 @@
 package com.jadonvb;
 
 import com.google.gson.Gson;
-import com.jadonvb.util.Logger;
 
 public class MessageHandler {
 

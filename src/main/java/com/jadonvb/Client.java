@@ -1,5 +1,7 @@
 package com.jadonvb;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +15,7 @@ public class Client extends Thread {
     private BufferedReader in;
     private Socket clientSocket;
     private String clientName;
+    private ServerType serverType;
     private final Server server;
     private ArrayList<String> subscribedQueues;
     private Logger logger;
@@ -37,7 +40,13 @@ public class Client extends Thread {
         } else {
             clientName = name;
             server.addClient(this);
-            sendMessage("Successfully connected!");
+            Message message = new Message();
+            message.setSender("JadMB");
+            ArrayList<String> arguments = new ArrayList<>();
+            arguments.add("hoihoi");
+            message.setArguments(arguments);
+            message.setType(MessageTypes.INFO);
+            sendMessage(message);
             start();
         }
     }
@@ -55,8 +64,9 @@ public class Client extends Thread {
         }
     }
 
-    public void sendMessage(String message) {
-        out.println(message);
+    public void sendMessage(Message message) {
+        Gson gson = new Gson();
+        out.println(gson.toJson(message));
     }
 
     public String getClientName() {
