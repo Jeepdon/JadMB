@@ -31,7 +31,10 @@ public class Client extends Thread {
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-        String name = in.readLine();
+        StringBuilder stringBuilder = new StringBuilder(String.valueOf(clientSocket.getInetAddress()));
+        stringBuilder.delete(0,1);
+
+        String name = stringBuilder.toString();
 
         Client client = server.getClient(name);
 
@@ -40,6 +43,7 @@ public class Client extends Thread {
         } else {
             clientName = name;
             server.addClient(this);
+
             Message message = new Message();
             message.setSender("JadMB");
             ArrayList<String> arguments = new ArrayList<>();
@@ -47,6 +51,8 @@ public class Client extends Thread {
             message.setArguments(arguments);
             message.setType(MessageTypes.INFO);
             sendMessage(message);
+
+            logger.log("Client " + clientName + " connected!");
             start();
         }
     }
@@ -77,7 +83,8 @@ public class Client extends Thread {
         clientSocket = newSocket;
     }
 
-    public ArrayList<String> getSubscribedQueues() {
-        return subscribedQueues;
+
+    public ServerType getServerType() {
+        return serverType;
     }
 }

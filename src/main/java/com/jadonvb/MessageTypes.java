@@ -6,6 +6,7 @@ public enum MessageTypes {
     LEAVE,
     KICK,
     INFO,
-    PORT_REQUEST
+    PORT_REQUEST,
+    INITIAL_MESSAGE
 
 }

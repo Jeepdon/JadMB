@@ -21,7 +21,7 @@ public class Server extends Thread {
 
         clients = new ArrayList<>();
 
-        messageHandler = new MessageHandler();
+        messageHandler = new MessageHandler(this);
         messageQueue = new MessageQueue();
 
         try {
