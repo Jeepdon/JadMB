@@ -11,5 +11,4 @@ public class Main {
 
         logger.log("JadMB started up correctly!");
     }
-
 }

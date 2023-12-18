@@ -13,8 +13,9 @@ public class Client extends Thread {
 
     private PrintWriter out;
     private BufferedReader in;
+    private final MessageHandler messageHandler;
     private Socket clientSocket;
-    private String clientName;
+    private String name;
     private ServerType serverType;
     private final Server server;
     private ArrayList<String> subscribedQueues;
@@ -26,22 +27,22 @@ public class Client extends Thread {
 
         this.clientSocket = clientSocket;
         this.server = server;
+        messageHandler = new MessageHandler(server, this);
         subscribedQueues = new ArrayList<>();
 
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-        StringBuilder stringBuilder = new StringBuilder(String.valueOf(clientSocket.getInetAddress()));
-        stringBuilder.delete(0,1);
+        start();
 
-        String name = stringBuilder.toString();
+    }
 
+    public void initiateClient() {
         Client client = server.getClient(name);
 
         if (client != null) {
             client.setSocket(clientSocket);
         } else {
-            clientName = name;
             server.addClient(this);
 
             Message message = new Message();
@@ -52,8 +53,7 @@ public class Client extends Thread {
             message.setType(MessageTypes.INFO);
             sendMessage(message);
 
-            logger.log("Client " + clientName + " connected!");
-            start();
+            logger.log("Client " + name + " connected!");
         }
     }
 
@@ -61,9 +61,9 @@ public class Client extends Thread {
     public void run() {
         while (true) {
             try {
-                server.getMessageHandler().getMessage(in.readLine());
+                messageHandler.getMessage(in.readLine());
             } catch (IOException ignored) {
-                logger.log("Client " + clientName + " disconnected!");
+                logger.log("Client " + name + " disconnected!");
                 server.removeClient(this);
                 break;
             }
@@ -76,11 +76,15 @@ public class Client extends Thread {
     }
 
     public String getClientName() {
-        return clientName;
+        return name;
     }
 
     public void setSocket(Socket newSocket) {
         clientSocket = newSocket;
+    }
+
+    public void setClientName(String name) {
+        this.name = name;
     }
 
 

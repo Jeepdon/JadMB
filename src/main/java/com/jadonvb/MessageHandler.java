@@ -5,10 +5,12 @@ import com.google.gson.Gson;
 public class MessageHandler {
 
     private Server server;
+    private Client client;
     private Logger logger;
 
-    public MessageHandler(Server server) {
+    public MessageHandler(Server server, Client client) {
         this.server = server;
+        this.client = client;
         logger = new Logger("JadMB");
     }
 
@@ -22,9 +24,20 @@ public class MessageHandler {
             return;
         }
 
-        log(message);
+        //log(message);
 
-        if (message.getReceiver().equals("MQ")) {
+        if (message.getReceiver().equals("MB")) {
+            if (!message.getType().equals(MessageTypes.INITIAL_MESSAGE)) {
+                return;
+            }
+
+            if (message.getArguments().get(0) == null) {
+                return;
+            }
+
+            client.setClientName(message.getArguments().get(0));
+            client.initiateClient();
+
             return;
         }
 
