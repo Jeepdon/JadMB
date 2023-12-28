@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 
 public class MessageHandler {
 
-    private Server server;
-    private Client client;
-    private Logger logger;
+    private final Server server;
+    private final Client client;
+    private final Logger logger;
 
     public MessageHandler(Server server, Client client) {
         this.server = server;
@@ -19,12 +19,18 @@ public class MessageHandler {
         Gson gson = new Gson();
         Message message = gson.fromJson(msg, Message.class);
 
+        if (message == null) {
+            if (msg != null) {
+                logger.error("Message: " + msg);
+            }
+            return;
+        }
         if (message.getReceiver() == null) {
             logger.log("No receiver named!");
             return;
         }
 
-        //log(message);
+        log(message);
 
         if (message.getReceiver().equals("MB")) {
             if (!message.getType().equals(MessageTypes.INITIAL_MESSAGE)) {
@@ -40,6 +46,9 @@ public class MessageHandler {
 
             return;
         }
+
+        System.out.println(message.getReceiver());
+        logger.error(message.getReceiver());
 
         Client client = server.getClient(message.getReceiver());
 
@@ -57,6 +66,8 @@ public class MessageHandler {
         logger.log("Sender: " + message.getSender());
         logger.log("Receiver: " + message.getReceiver());
         logger.log(message.getType().toString());
-        logger.log(message.getArguments().get(0));
+        try  {
+            logger.log(message.getArguments().get(0));
+        } catch (Exception ignore){}
     }
 }

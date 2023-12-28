@@ -46,7 +46,7 @@ public class Client extends Thread {
             server.addClient(this);
 
             Message message = new Message();
-            message.setSender("JadMB");
+            message.setSender("MB");
             ArrayList<String> arguments = new ArrayList<>();
             arguments.add("hoihoi");
             message.setArguments(arguments);
