@@ -54,6 +54,7 @@ public class Server extends Thread {
 
     public void removeClient(Client client) {
         clients.remove(client);
+        logger.log("Removed client " + client.getClientName());
     }
 
     public void addClient(Client client) {

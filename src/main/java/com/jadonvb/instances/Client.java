@@ -45,6 +45,8 @@ public class Client extends Thread {
 
         if (client != null) {
             client.setSocket(clientSocket);
+            stop();
+            server.removeClient(this);
         } else {
             server.addClient(this);
 
@@ -92,5 +94,9 @@ public class Client extends Thread {
 
     public ServerType getServerType() {
         return serverType;
+    }
+
+    public void setServerType(ServerType serverType) {
+        this.serverType = serverType;
     }
 }

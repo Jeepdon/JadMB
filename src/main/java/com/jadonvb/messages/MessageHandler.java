@@ -1,6 +1,7 @@
 package com.jadonvb.messages;
 
 import com.google.gson.Gson;
+import com.jadonvb.enums.ServerType;
 import com.jadonvb.instances.Client;
 import com.jadonvb.Logger;
 import com.jadonvb.instances.Server;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class MessageHandler {
 
     private final Server server;
-    private final Client client;
+    private Client client;
     private final Logger logger;
 
     public MessageHandler(Server server, Client client) {
@@ -39,6 +40,9 @@ public class MessageHandler {
         log(message);
 
         if (message.getReceiver().equals("MB")) {
+
+            if (message.getType().equals(MessageTypes.UNREGISTER)) unregister();
+
             if (!message.getType().equals(MessageTypes.INITIAL_MESSAGE)) {
                 return;
             }
@@ -48,6 +52,7 @@ public class MessageHandler {
             }
 
             client.setClientName(message.getArguments().get(0));
+            client.setServerType(ServerType.valueOf(message.getArguments().get(1)));
             client.initiateClient();
 
             return;
@@ -63,6 +68,25 @@ public class MessageHandler {
 
         receiver.sendMessage(message);
 
+    }
+
+    private void unregister() {
+        if (client.getServerType().equals(ServerType.GAME)) {
+
+            Client velocity = server.getClient("velocity");
+            if (velocity == null) {
+                return;
+            }
+
+            Message message = new Message();
+            message.setSender(client.getClientName());
+            message.setReceiver("velocity");
+            message.setType(MessageTypes.UNREGISTER);
+
+            velocity.sendMessage(message);
+        }
+
+        server.removeClient(client);
     }
 
     private void log(Message message) {
@@ -86,5 +110,9 @@ public class MessageHandler {
         newMessage.setArguments(arguments);
 
         return newMessage;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
