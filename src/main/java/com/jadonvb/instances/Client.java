@@ -1,6 +1,11 @@
-package com.jadonvb;
+package com.jadonvb.instances;
 
 import com.google.gson.Gson;
+import com.jadonvb.Logger;
+import com.jadonvb.enums.MessageTypes;
+import com.jadonvb.enums.ServerType;
+import com.jadonvb.messages.Message;
+import com.jadonvb.messages.MessageHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +23,6 @@ public class Client extends Thread {
     private String name;
     private ServerType serverType;
     private final Server server;
-    private ArrayList<String> subscribedQueues;
     private Logger logger;
 
     public Client(Socket clientSocket, Server server) throws IOException {
@@ -28,7 +32,6 @@ public class Client extends Thread {
         this.clientSocket = clientSocket;
         this.server = server;
         messageHandler = new MessageHandler(server, this);
-        subscribedQueues = new ArrayList<>();
 
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -62,7 +65,7 @@ public class Client extends Thread {
         while (true) {
             try {
                 messageHandler.getMessage(in.readLine());
-            } catch (IOException ignored) {
+            } catch (IOException exception) {
                 logger.log("Client " + name + " disconnected!");
                 server.removeClient(this);
                 break;
@@ -86,7 +89,6 @@ public class Client extends Thread {
     public void setClientName(String name) {
         this.name = name;
     }
-
 
     public ServerType getServerType() {
         return serverType;

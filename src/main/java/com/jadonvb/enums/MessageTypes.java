@@ -1,4 +1,4 @@
-package com.jadonvb;
+package com.jadonvb.enums;
 
 public enum MessageTypes {
 
@@ -7,6 +7,8 @@ public enum MessageTypes {
     KICK,
     INFO,
     PORT_REQUEST,
-    INITIAL_MESSAGE
+    INITIAL_MESSAGE,
+    UNREGISTER,
+    CLIENT_NOT_FOUND
 
 }

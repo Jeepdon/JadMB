@@ -1,4 +1,6 @@
-package com.jadonvb;
+package com.jadonvb.messages;
+
+import com.jadonvb.enums.MessageTypes;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.jadonvb;
+package com.jadonvb.enums;
 
 public enum ServerType {
     LOBBY,

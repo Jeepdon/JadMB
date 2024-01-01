@@ -1,8 +1,9 @@
-package com.jadonvb;
+package com.jadonvb.instances;
 
-import java.io.BufferedReader;
+import com.jadonvb.Logger;
+import com.jadonvb.instances.Client;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -11,16 +12,12 @@ public class Server extends Thread {
     private final Logger logger;
     private final int PORT = 6989;
     private ServerSocket serverSocket;
-    private MessageQueue messageQueue;
     private final ArrayList<Client> clients;
 
     public Server() {
 
         logger = new Logger("JadMB");
-
         clients = new ArrayList<>();
-
-        messageQueue = new MessageQueue();
 
         try {
             serverSocket = new ServerSocket(PORT);
@@ -36,6 +33,7 @@ public class Server extends Thread {
     public void run() {
         while (true) {
             try {
+                // If there is a client that wants to connect create a new client class
                 Socket clientSocket = serverSocket.accept();
                 new Client(clientSocket,this);
             } catch (IOException e) {

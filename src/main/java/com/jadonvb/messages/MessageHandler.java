@@ -1,6 +1,12 @@
-package com.jadonvb;
+package com.jadonvb.messages;
 
 import com.google.gson.Gson;
+import com.jadonvb.instances.Client;
+import com.jadonvb.Logger;
+import com.jadonvb.instances.Server;
+import com.jadonvb.enums.MessageTypes;
+
+import java.util.ArrayList;
 
 public class MessageHandler {
 
@@ -47,21 +53,20 @@ public class MessageHandler {
             return;
         }
 
-        System.out.println(message.getReceiver());
-        logger.error(message.getReceiver());
+        Client receiver = server.getClient(message.getReceiver());
 
-        Client client = server.getClient(message.getReceiver());
-
-        if (client == null) {
+        if (receiver == null) {
             logger.log("Could not find client!");
+            client.sendMessage(getClientNotFoundMessage(message));
             return;
         }
 
-        client.sendMessage(message);
+        receiver.sendMessage(message);
 
     }
 
     private void log(Message message) {
+        logger.log(" ");
         logger.log("New message: ");
         logger.log("Sender: " + message.getSender());
         logger.log("Receiver: " + message.getReceiver());
@@ -69,5 +74,17 @@ public class MessageHandler {
         try  {
             logger.log(message.getArguments().get(0));
         } catch (Exception ignore){}
+    }
+
+    private Message getClientNotFoundMessage(Message message) {
+        Message newMessage = new Message();
+        newMessage.setType(MessageTypes.CLIENT_NOT_FOUND);
+        newMessage.setSender("MB");
+        newMessage.setReceiver(client.getClientName());
+        ArrayList<String> arguments = new ArrayList<>();
+        arguments.add(message.getReceiver());
+        newMessage.setArguments(arguments);
+
+        return newMessage;
     }
 }
